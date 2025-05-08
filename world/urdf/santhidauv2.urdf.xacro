@@ -1,0 +1,626 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot name="santhidauv2" xmlns:xacro="https://www.ros.org/wiki/xacro">
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-0.0056828 -0.0072409 -0.3447"
+        rpy="0 0 0" />
+      <mass
+        value="247220" />
+      <inertia
+        ixx="16315000"
+        ixy="48904"
+        ixz="-273.37"
+        iyy="6733400"
+        iyz="-348.26"
+        izz="23039000" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 1.5708" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 1 1 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="basket_1">
+    <inertial>
+      <origin
+        xyz="5.87632505144597E-06 -1.13225305486332 -0.0479835884916398"
+        rpy="0 0 0" />
+      <mass
+        value="256.211781887934" />
+      <inertia
+        ixx="37.9700617415597"
+        ixy="-1.75078330790823E-06"
+        ixz="1.54569615661759E-06"
+        iyy="58.402016115356"
+        iyz="-4.30242382380639"
+        izz="43.0969043665775" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/basket_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/basket_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="basket1"
+    type="fixed">
+    <origin
+      xyz="0 -6.6228 2.318"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="basket_1" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="basket_2">
+    <inertial>
+      <origin
+        xyz="-5.87632505499869E-06 1.13225305486333 -0.0479835884916398"
+        rpy="0 0 0" />
+      <mass
+        value="256.211781887931" />
+      <inertia
+        ixx="37.9700617415588"
+        ixy="-1.75078333451089E-06"
+        ixz="-1.54569610860818E-06"
+        iyy="58.4020161153551"
+        iyz="4.30242382380605"
+        izz="43.0969043665767" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/basket_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="1 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/basket_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="basket2"
+    type="fixed">
+    <origin
+      xyz="0 6.6228 2.318"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="basket_2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="part_blue_1">
+    <inertial>
+      <origin
+        xyz="-1.77635683940025E-15 0.429250000000002 0.000249999999999861"
+        rpy="0 0 0" />
+      <mass
+        value="0.187499999999982" />
+      <inertia
+        ixx="0.130247398437487"
+        ixy="9.00886649332332E-17"
+        ixz="4.41796078006604E-17"
+        iyy="0.227929691406228"
+        iyz="2.14826804147592E-17"
+        izz="0.358177082031215" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/part_blue_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/part_blue_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="partblue1"
+    type="fixed">
+    <origin
+      xyz="0 -6.2625 -0.1"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="part_blue_1" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="part_blue_2">
+    <inertial>
+      <origin
+        xyz="9.97635014599041E-07 0.552507406348708 0.000249999999999972"
+        rpy="0 0 0" />
+      <mass
+        value="0.288298436383843" />
+      <inertia
+        ixx="0.444935649613053"
+        ixy="6.75521921469997E-07"
+        ixz="-7.22901370605254E-18"
+        iyy="1.60479618282379"
+        iyz="-1.00987988487437E-18"
+        izz="2.04973182042441" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/part_blue_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/part_blue_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="partblue2"
+    type="fixed">
+    <origin
+      xyz="0 -5.5618 -0.1"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="part_blue_2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="part_red_1">
+    <inertial>
+      <origin
+        xyz="-1.77635683940025E-15 -0.429250000000003 0.000249999999999861"
+        rpy="0 0 0" />
+      <mass
+        value="0.187499999999982" />
+      <inertia
+        ixx="0.130247398437488"
+        ixy="7.68021713934418E-16"
+        ixz="-9.45193215481462E-18"
+        iyy="0.227929691406221"
+        iyz="-2.69640562250989E-18"
+        izz="0.358177082031209" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/part_red_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/part_red_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="partred1"
+    type="fixed">
+    <origin
+      xyz="0 6.2625 -0.1"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="part_red_1" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="part_red_2">
+    <inertial>
+      <origin
+        xyz="9.976350039409E-07 -0.552507406348749 0.000250000000000306"
+        rpy="0 0 0" />
+      <mass
+        value="0.288298436383972" />
+      <inertia
+        ixx="0.444935649613115"
+        ixy="-6.75521916528729E-07"
+        ixz="5.00831401416545E-17"
+        iyy="1.60479618282416"
+        iyz="-1.0213526710316E-17"
+        izz="2.04973182042484" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/part_red_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/part_red_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="partred2"
+    type="fixed">
+    <origin
+      xyz="0 5.5618 -0.1"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="part_red_2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="car_1">
+    <inertial>
+      <origin
+        xyz="0 0 -0.000249999999999861"
+        rpy="0 0 0" />
+      <mass
+        value="0.00392699081698815" />
+      <inertia
+        ixx="2.45445107292685E-06"
+        ixy="-7.72410504633546E-41"
+        ixz="4.65003208422974E-27"
+        iyy="2.45445107292685E-06"
+        iyz="4.07749716508468E-24"
+        izz="4.90873852123632E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/car_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/car_1.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="car1"
+    type="fixed">
+    <origin
+      xyz="3.1496 2.1246 -0.0995"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="car_1" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="car_2">
+    <inertial>
+      <origin
+        xyz="-0.00133330267301002 0.00496517215259651 0.00758352273570367"
+        rpy="0 0 0" />
+      <mass
+        value="0.0039269908169868" />
+      <inertia
+        ixx="2.4544510729257E-06"
+        ixy="-1.9759978511221E-40"
+        ixz="4.65003208430027E-27"
+        iyy="2.4544510729257E-06"
+        iyz="4.07749716497997E-24"
+        izz="4.90873852123403E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/car_2.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/car_2.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="car2"
+    type="fixed">
+    <origin
+      xyz="1.6525684565338 1.38074631430848 -0.107333522735703"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="car_2" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="car_3">
+    <inertial>
+      <origin
+        xyz="0 -1.77635683940025E-15 -0.000250000000000083"
+        rpy="0 0 0" />
+      <mass
+        value="0.00392699081698697" />
+      <inertia
+        ixx="2.45445107292564E-06"
+        ixy="6.34140417483828E-42"
+        ixz="4.65003208432378E-27"
+        iyy="2.45445107292564E-06"
+        iyz="3.19517117818344E-24"
+        izz="4.9087385212339E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/car_3.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/car_3.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="car3"
+    type="fixed">
+    <origin
+      xyz="0 1.1316 -0.0995"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="car_3" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="car_4">
+    <inertial>
+      <origin
+        xyz="-1.77635683940025E-15 3.5527136788005E-15 -0.000249999999999972"
+        rpy="0 0 0" />
+      <mass
+        value="0.0039269908169868" />
+      <inertia
+        ixx="2.4544510729257E-06"
+        ixy="-1.975997851122E-40"
+        ixz="4.65003208430027E-27"
+        iyy="2.4544510729257E-06"
+        iyz="4.07749716497997E-24"
+        izz="4.90873852123403E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/car_4.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/car_4.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="car4"
+    type="fixed">
+    <origin
+      xyz="-1.6512 1.3857 -0.0995"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="car_4" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="car_5">
+    <inertial>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <mass
+        value="0" />
+      <inertia
+        ixx="0"
+        ixy="0"
+        ixz="0"
+        iyy="0"
+        iyz="0"
+        izz="0" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/car_5.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0 0 0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="file://$(find santhidauv2)/world/meshes/car_5.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="car5"
+    type="fixed">
+    <origin
+      xyz="-3.1496 2.1246 -0.0995"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="car_5" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>
