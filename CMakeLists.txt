@@ -16,7 +16,7 @@ find_package(rclpy REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 install(
-  DIRECTORY launch config world urdf meshes
+  DIRECTORY launch config world urdf meshes models
   DESTINATION share/${PROJECT_NAME}
 )
 

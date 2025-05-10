@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <robot name="assem_urdf" xmlns:xacro="https://www.ros.org/wiki/xacro">
-  
-  
+
+
   <!-- ============================================= -->
   <!-- Base Link - Main body of the robot           -->
   <!-- ============================================= -->
@@ -10,7 +10,7 @@
   <link name="chassis_link">
     <inertial>
       <origin
-        xyz="0.0099132 0.00030561 0.03955"  
+        xyz="0.0099132 0.00030561 0.03955"
         rpy="0 0 0" />
       <mass
         value="5" />
@@ -46,14 +46,14 @@
       </geometry>
     </collision>
   </link>
-  
+
   <joint name="chassis_joint" type="fixed">
     <parent link="base_link"/>
     <child link="chassis_link"/>
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </joint>
-  
-  
+
+
   <!-- ============================================= -->
   <!-- Right Wheel - Drive mechanism                -->
   <!-- ============================================= -->
@@ -101,7 +101,7 @@
     name="wheel_right_joint"
     type="continuous">
     <origin
-      xyz="-0.036511 -0.099997 0.0198"
+      xyz="-0.036511 -0.098 0.0198"
       rpy="1.5708 0 0" />
     <parent
       link="chassis_link" />
@@ -158,7 +158,7 @@
     name="wheel_left_joint"
     type="continuous">
     <origin
-      xyz="-0.036511 0.099997 0.0198"
+      xyz="-0.036511 0.098 0.0198"
       rpy="-1.5708 0 0" />
     <parent
       link="chassis_link" />
@@ -321,11 +321,11 @@
     <hardware>
         <plugin>ign_ros2_control/IgnitionSystem</plugin>
     </hardware>
-  
+
     <joint name="wheel_right_joint">
       <command_interface name="velocity">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <param name="min">-3.1416</param>
+        <param name="max">3.1416</param>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
@@ -333,10 +333,9 @@
     </joint>
 
     <joint name="wheel_left_joint">
-      
       <command_interface name="velocity">
-        <param name="min">-1</param>
-        <param name="max">1</param>
+        <param name="min">-3.1416</param>
+        <param name="max">3.1416</param>
       </command_interface>
       <state_interface name="position"/>
       <state_interface name="velocity"/>
@@ -345,10 +344,26 @@
   </ros2_control>
 
   <gazebo>
+    <!-- Plugin gz_ros2_control-system -->
+    <!-- Đây là plugin kết nối Gazebo với ROS 2 Control, cho phép điều khiển robot trong môi trường mô phỏng -->
+    <!-- Plugin này tạo giao diện giữa các joint trong mô phỏng và hệ thống điều khiển ROS 2 -->
     <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin">
       <parameters>$(find assem_urdf)/config/control.yaml</parameters>
-
     </plugin>
+
+    <!-- Collision properties -->
+    <collision>
+      <!-- max_contacts: Số lượng điểm tiếp xúc tối đa cho phép khi có va chạm -->
+      <max_contacts>20</max_contacts>
+      <contact>
+        <ode>
+          <!-- max_vel: Vận tốc tối đa cho phép khi có va chạm (100.0 m/s) -->
+          <max_vel>100.0</max_vel>
+          <!-- min_depth: Độ sâu tối thiểu để xem là có va chạm (0.001m = 1mm) -->
+          <min_depth>0.001</min_depth>
+        </ode>
+      </contact>
+    </collision>
   </gazebo>
 
 </robot>
