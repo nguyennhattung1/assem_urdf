@@ -30,19 +30,26 @@ def generate_launch_description():
         output='screen'
     )
 
-    # bridge_camera = Node(
-    #     package='ros_ign_bridge',
-    #     executable='parameter_bridge',
-    #     arguments=[
-    #         '/world/robocon2025_map/model/my_robot/link/ban_bong/sensor/depth_camera/depth_image@sensor_msgs/msg/Image@ignition.msgs.Image',
-    #         '/world/robocon2025_map/model/my_robot/link/ban_bong/sensor/depth_camera/depth_image/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
-    #     ],
-    #     remappings=[
-    #         ('/world/robocon2025_map/model/my_robot/link/ban_bong/sensor/depth_camera/depth_image', '/depth_image/image_raw'),
-    #         ('/world/robocon2025_map/model/my_robot/link/ban_bong/sensor/depth_camera/depth_image/points', 'depth/points')
-    #     ],
-    #     output='screen',
-    # )
+    bridge_lidar = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=['/scan@sensor_msgs/msg/LaserScan[ignition.msgs.LaserScan'],
+        output='screen'
+    )
+
+    bridge_camera = Node(
+        package='ros_ign_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            '/world/collision_test/model/my_robot/link/base_link/sensor/depth_camera/depth_image@sensor_msgs/msg/Image@ignition.msgs.Image',
+            '/world/collision_test/model/my_robot/link/base_link/sensor/depth_camera/depth_image/points@sensor_msgs/msg/PointCloud2@ignition.msgs.PointCloudPacked',
+        ],
+        remappings=[
+            ('/world/collision_test/model/my_robot/link/base_link/sensor/depth_camera/depth_image', '/depth_image/image_raw'),
+            ('/world/collision_test/model/my_robot/link/base_link/sensor/depth_camera/depth_image/points', 'depth/points')
+        ],
+        output='screen',
+    )
     rviz = Node(    
         package='rviz2',
         executable='rviz2',
@@ -54,7 +61,8 @@ def generate_launch_description():
             load_diff_drive_controller,
             bridge_clock,
             # bridge_cmd_vel,
-            # bridge_camera,
+            bridge_lidar,
+            bridge_camera,
             rviz,
             # bridge_cmd_slide_mid,
             # bridge_cmd_slide_up,

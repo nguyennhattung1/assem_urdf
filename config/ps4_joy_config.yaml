@@ -3,16 +3,16 @@
         axis_linear:  # Mặc định là linear.x
           x: 1        
         scale_linear:
-          x: 0.102      # Cập nhật: Vận tốc thẳng tối đa (m/s)
+          x: 1.133      # Cập nhật: Vận tốc thẳng tối đa (m/s)
         scale_linear_turbo:
-          x: 0.102      # Cập nhật: Giữ ở max, vì control.yaml sẽ giới hạn
+          x: 1.133      # Cập nhật: Giữ ở max, vì control.yaml sẽ giới hạn
                         # (Hoặc đặt thấp hơn nếu muốn chế độ turbo chậm hơn max)
         axis_angular: # Mặc định là angular.z
           yaw: 0      
         scale_angular:
-          yaw: 1.042    # Cập nhật: Vận tốc xoay tối đa (rad/s)
+          yaw: 5.564    # Cập nhật: Vận tốc xoay tối đa (rad/s)
         scale_angular_turbo:
-          yaw: 1.042    # Cập nhật: Giữ ở max, vì control.yaml sẽ giới hạn
+          yaw: 5.564    # Cập nhật: Giữ ở max, vì control.yaml sẽ giới hạn
 
 
         enable_button: 4          # Nút L1 (Shoulder Left) làm deadman switch (cần giữ để di chuyển)
