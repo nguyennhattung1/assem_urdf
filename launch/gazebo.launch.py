@@ -128,7 +128,7 @@ def generate_launch_description():
     # Set verbosity level for Gazebo
     # Higher values (0-4) provide more detailed output for debugging
     # 0: Error, 1: Warning, 2: Info, 3: Debug, 4: Verbose
-    gz_verbosity = "3"  
+    gz_verbosity = "4"  
 
     # Gazebo launch configuration
     gazebo_headless = ExecuteProcess(
@@ -184,7 +184,7 @@ def generate_launch_description():
         # gz_sim,
         gazebo,
         gazebo_headless,
-        # robot_localization_node,
+        robot_localization_node,
     ])
 
     return ld
