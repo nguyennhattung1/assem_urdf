@@ -14,8 +14,8 @@ diffbot_base_controller:
     left_wheel_names: ["wheel_left_joint"]
     right_wheel_names: ["wheel_right_joint"]
 
-    wheel_separation: 0.196
-    wheels_per_side: 1  # actually 2, but both are controlled by 1 signal
+    wheel_separation: 0.196  # Distance between wheels
+    wheels_per_side: 1
     wheel_radius: 0.0325
 
     wheel_separation_multiplier: 1.0
@@ -32,23 +32,20 @@ diffbot_base_controller:
     enable_odom_tf: true
     cmd_vel_timeout: 0.5
     publish_limited_velocity: true
-    use_stamped_vel: false  # Xác định loại message được sử dụng cho cmd_vel: 
-                            # false: sử dụng geometry_msgs/Twist (không có timestamp)
-                            # true: sử dụng geometry_msgs/TwistStamped (có timestamp phục vụ cho việc theo dõi thời gian
-                            # của lệnh điều khiển, giúp hệ thống xác định độ mới của dữ liệu và xử lý timeout chính xác hơn)
-                            # Khi false, controller sẽ subscribe vào topic cmd_vel_unstamped
+    use_stamped_vel: false
     velocity_rolling_window_size: 10
 
-    # PID Controller Parameters - Motor: 333 RPM (34.87 rad/s)
-    # Max linear velocity = wheel_radius * max_angular_velocity = 0.0325 * 34.87 = 1.13 m/s
-    # Max angular velocity = (2 * max_linear_velocity) / wheel_separation = (2 * 1.13) / 0.196 = 11.56 rad/s
+    # PID Controller Parameters based on wheel velocity limits from URDF
+    # Reduced max angular velocity for better control
+    # Max angular velocity = 5.0 rad/s (reduced from 31.416)
+    # Max linear velocity = wheel_radius * max_angular_velocity = 0.0325 * 5.0 = 0.1625 m/s
     
     linear.x.has_velocity_limits: true
     linear.x.has_acceleration_limits: true
     linear.x.has_jerk_limits: false
-    linear.x.max_velocity: 1.13    # m/s - 333 RPM với bánh xe r=0.0325m
-    linear.x.min_velocity: -1.13   # m/s
-    linear.x.max_acceleration: 0.5  # m/s² - Giảm xuống để tránh trượt
+    linear.x.max_velocity: 1.02    # m/s - Based on wheel max angular velocity
+    linear.x.min_velocity: -1.02   # m/s
+    linear.x.max_acceleration: 0.5  # m/s²
     linear.x.min_acceleration: -0.5 # m/s²
     linear.x.max_jerk: 0.0         # m/s³
     linear.x.min_jerk: 0.0         # m/s³
@@ -56,14 +53,14 @@ diffbot_base_controller:
     angular.z.has_velocity_limits: true
     angular.z.has_acceleration_limits: true
     angular.z.has_jerk_limits: false
-    angular.z.max_velocity: 11.56   # rad/s - Tương ứng với 333 RPM
-    angular.z.min_velocity: -11.56  # rad/s
-    angular.z.max_acceleration: 2.0  # rad/s² - Điều chỉnh cho phù hợp
-    angular.z.min_acceleration: -2.0 # rad/s²
-    angular.z.max_jerk: 0.0        # rad/s³
-    angular.z.min_jerk: 0.0        # rad/s³
+    angular.z.max_velocity: 5.0   # rad/s - Reduced for better control
+    angular.z.min_velocity: -5.0  # rad/s
+    angular.z.max_acceleration: 1.0  # rad/s² - Reduced for smoother rotation
+    angular.z.min_acceleration: -1.0 # rad/s²
+    angular.z.max_jerk: 0.0         # rad/s³
+    angular.z.min_jerk: 0.0         # rad/s³
 
-    # PID gains - Điều chỉnh phù hợp với động cơ 333 RPM
+    # PID gains - Adjusted for the robot's dynamics
     linear.x.pid: {p: 5.0, i: 0.5, d: 0.0}  
     angular.z.pid: {p: 5.0, i: 0.5, d: 0.0}
 
