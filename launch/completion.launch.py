@@ -1,61 +1,49 @@
-import os
-from ament_index_python.packages import get_package_share_directory
-from launch import LaunchDescription
-from launch.actions import LogInfo, ExecuteProcess, RegisterEventHandler, IncludeLaunchDescription, TimerAction, DeclareLaunchArgument
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
+import launch
 from launch_ros.actions import Node
-from launch.event_handlers import OnProcessIO
+from launch.actions import (
+    ExecuteProcess,
+    DeclareLaunchArgument,
+    LogInfo,
+    RegisterEventHandler,
+    TimerAction,
+)
+from launch.conditions import IfCondition
+from launch.substitutions import (
+    LaunchConfiguration,
+    PathJoinSubstitution,
+    NotSubstitution,
+)
+from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch_ros.substitutions import FindPackageShare
 from launch.events.process import ProcessIO
-from typing import List, Union, Sequence
+from launch.event_handlers import OnProcessIO
 
-def on_matching_output(matcher: str, result: List):
-    """Create an event handler that triggers when output contains a specific string."""
-    def on_output(event: ProcessIO) -> Union[List, None]:
+# Create event handler that waits for an output message and then returns actions
+def on_matching_output(matcher: str, result: launch.SomeActionsType):
+    def on_output(event: ProcessIO):
         for line in event.text.decode().splitlines():
             if matcher in line:
                 return result
-        return None
+
     return on_output
 
+
+# Lanch the robot and the navigation stack
+
+
 def generate_launch_description():
-    pkg_assem_urdf = get_package_share_directory('assem_urdf')
-    pkg_slam_toolbox = get_package_share_directory('slam_toolbox')
-
-    # Declare common launch arguments that might be needed by included files
-    declare_use_sim_time_arg = DeclareLaunchArgument(
-        'use_sim_time',
-        default_value='true',
-        description='Use simulation (Gazebo) clock if true'
+    # Messages are from: https://navigation.ros.org/setup_guides/sensors/setup_sensors.html#launching-nav2
+    diff_drive_loaded_message = (
+        "Successfully loaded controller diff_drive_base_controller into state active"
     )
-    declare_headless_arg = DeclareLaunchArgument(
-        'headless',
-        default_value='False',
-        description='Run Gazebo in headless mode'
-    )
-    # Add other arguments from gazebo.launch.py if you want to control them from here
-    # For example, world, spawn position (x, y, z), use_localization
-    declare_world_arg = DeclareLaunchArgument(
-        'world',
-        default_value=PathJoinSubstitution([pkg_assem_urdf, 'world', 'robotcon2025.sdf']), # Default world from gazebo.launch.py
-        description='SDF World File for Gazebo'
-    )
-    declare_spawn_x_arg = DeclareLaunchArgument("x", default_value="0.0", description="Model Spawn X Axis Value")
-    declare_spawn_y_arg = DeclareLaunchArgument("y", default_value="0.0", description="Model Spawn Y Axis Value")
-    declare_spawn_z_arg = DeclareLaunchArgument("z", default_value="0.2", description="Model Spawn Z Axis Value")
-    declare_use_localization_arg = DeclareLaunchArgument('use_localization', default_value='False', description='Whether to use robot_localization')
-    
-    # Custom SLAM Toolbox params file from assem_urdf package
-    custom_slam_params_file = os.path.join(pkg_assem_urdf, 'config', 'slam_toolbox_params.yaml')
+    toolbox_ready_message = "Registering sensor"
+    navigation_ready_message = "Creating bond timer"
 
-    # Search strings for event triggers - these should match actual output from processes
-    diff_drive_loaded_message = "Diff drive controller loaded"
-    joy_teleop_loaded_message = "Joy teleop loaded"
-    slam_toolbox_loaded_message = "Slam toolbox loaded"
+    run_headless = LaunchConfiguration("run_headless")
+    world_file = LaunchConfiguration("world_file")
 
-    # 1. Include Gazebo launch
-    gazebo_launch = ExecuteProcess(
+    # Including launchfiles with execute process because i didn't find another way to wait for a certain messages befor starting the next launchfile
+    bringup = ExecuteProcess(
         name="launch_bringup",
         cmd=[
             "ros2",
@@ -64,83 +52,18 @@ def generate_launch_description():
                 [
                     FindPackageShare("assem_urdf"),
                     "launch",
-                    "gazebo.launch.py",
+                    "bringup.launch.py",
                 ]
             ),
             "use_rviz:=false",
-            ["use_sim_time:=", LaunchConfiguration('use_sim_time')],
-            ["headless:=", LaunchConfiguration('headless')],
-            ["world:=", LaunchConfiguration('world')],
-            ["x:=", LaunchConfiguration('x')],
-            ["y:=", LaunchConfiguration('y')],
-            ["z:=", LaunchConfiguration('z')],
-            ["use_localization:=", LaunchConfiguration('use_localization')],
+            ["run_headless:=", run_headless],
+            "use_localization:=false",
+            ["world_file:=", world_file]
         ],
         shell=False,
         output="screen",
     )
-    
-    # 2. Include Control and Topic Init launch after 15 seconds
-    control_topic_init_launch = ExecuteProcess(
-        name="launch_control_topic_init",
-        cmd=[
-            "ros2",
-            "launch",
-            PathJoinSubstitution(
-                [
-                    FindPackageShare("assem_urdf"),
-                    "launch",
-                    "control_and_topic_init.launch.py",
-                ]
-            ),
-        ],
-        shell=False,
-        output="screen",
-    )
-
-    # Use TimerAction instead of event handler to start after 15 seconds
-    delayed_control_topic_init = TimerAction(
-        period=15.0,
-        actions=[
-            LogInfo(msg="Starting Control and Topic Init after 15-second delay..."),
-            control_topic_init_launch
-        ]
-    )
-
-    # 3. Include Joy Teleop launch
-    joy_teleop_launch = ExecuteProcess(
-        name="launch_joy_teleop",
-        cmd=[
-            "ros2",
-            "launch",
-            PathJoinSubstitution(
-                [
-                    FindPackageShare("assem_urdf"),
-                    "launch",
-                    "joy_teleop.launch.py",
-                ]
-            ),
-        ],
-        shell=False,
-        output="screen",
-    )
-    waiting_joy_teleop = RegisterEventHandler(
-        OnProcessIO(
-            target_action=control_topic_init_launch,
-            on_stdout=on_matching_output(
-                joy_teleop_loaded_message,
-                [
-                    LogInfo(
-                        msg="Joy teleop loaded. Starting Joy Teleop..."
-                    ),
-                    joy_teleop_launch,
-                ],
-            )
-        )
-    )
-
-    # 4. SLAM Toolbox with custom parameters (using base_link instead of base_footprint)
-    slam_toolbox_launch = ExecuteProcess(
+    toolbox = ExecuteProcess(
         name="launch_slam_toolbox",
         cmd=[
             "ros2",
@@ -152,39 +75,109 @@ def generate_launch_description():
                     "online_async_launch.py",
                 ]
             ),
-            "use_sim_time:=True",
-            ["params_file:=", custom_slam_params_file]
         ],
         shell=False,
         output="screen",
     )
-    waiting_slam_toolbox = RegisterEventHandler(
+    waiting_toolbox = RegisterEventHandler(
         OnProcessIO(
-            target_action=joy_teleop_launch,
+            target_action=bringup,
             on_stdout=on_matching_output(
-                slam_toolbox_loaded_message,
+                diff_drive_loaded_message,
                 [
                     LogInfo(
-                        msg="Slam toolbox loaded. Starting SLAM Toolbox..."
+                        msg="Diff drive controller loaded. Starting SLAM Toolbox..."
                     ),
-                    slam_toolbox_launch,
+                    toolbox,
                 ],
-            )
+            ),
         )
     )
-    return LaunchDescription([
-        declare_use_sim_time_arg,
-        declare_headless_arg,
-        declare_world_arg,
-        declare_spawn_x_arg,
-        declare_spawn_y_arg,
-        declare_spawn_z_arg,
-        declare_use_localization_arg,
-        gazebo_launch,
-        delayed_control_topic_init,
-        waiting_joy_teleop,
-        waiting_slam_toolbox,
-    ])
-    
-    
-    
+
+    navigation = ExecuteProcess(
+        name="launch_navigation",
+        cmd=[
+            "ros2",
+            "launch",
+            PathJoinSubstitution(
+                [
+                    FindPackageShare("nav2_bringup"),
+                    "launch",
+                    "navigation_launch.py",
+                ]
+            ),
+            "use_sim_time:=True",
+            ["params_file:=", LaunchConfiguration('params_file')]
+        ],
+        shell=False,
+        output="screen",
+    )
+    rviz_node = Node(
+        condition=IfCondition(NotSubstitution(run_headless)),
+        package="rviz2",
+        executable="rviz2",
+        name="rviz2",
+        output="screen",
+        arguments=["-d", LaunchConfiguration("rvizconfig")],
+    )
+    waiting_navigation = RegisterEventHandler(
+        OnProcessIO(
+            target_action=toolbox,
+            on_stdout=on_matching_output(
+                # diff_drive_loaded_message,
+                toolbox_ready_message,
+                [
+                    LogInfo(msg="SLAM Toolbox loaded. Starting navigation..."),
+                    # TODO Debug: Navigation fails to start if it's launched right after the slam_toolbox
+                    TimerAction(
+                        period=20.0,
+                        actions=[navigation],
+                    ),
+                    rviz_node,
+                ],
+            ),
+        )
+    )
+
+    waiting_success = RegisterEventHandler(
+        OnProcessIO(
+            target_action=navigation,
+            on_stdout=on_matching_output(
+                navigation_ready_message,
+                [
+                    LogInfo(msg="Ready for navigation!"),
+                ],
+            ),
+        )
+    )
+
+    return launch.LaunchDescription(
+        [
+            DeclareLaunchArgument(
+                "params_file",
+                default_value=[FindPackageShare("assem_urdf"), "/config/nav2_params.yaml"],
+                description="Full path to the ROS2 parameters file to use for all launched nodes",
+            ),
+            DeclareLaunchArgument(
+                name="rvizconfig",
+                default_value=[
+                    FindPackageShare("assem_urdf"),
+                    "/rviz/navigation_config.rviz",
+                ],
+                description="Absolute path to rviz config file",
+            ),
+            DeclareLaunchArgument(
+                name="run_headless",
+                default_value="False",
+                description="Start GZ in hedless mode and don't start RViz (overrides use_rviz)",
+            ),
+            DeclareLaunchArgument(
+                name="world_file",
+                default_value="bookstore.sdf",
+            ),
+            bringup,
+            waiting_toolbox,
+            waiting_navigation,
+            waiting_success,
+        ]
+    )
