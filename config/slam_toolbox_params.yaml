@@ -1,5 +1,6 @@
 slam_toolbox:
   ros__parameters:
+
     # Plugin params
     solver_plugin: solver_plugins::CeresSolver
     ceres_linear_solver: SPARSE_NORMAL_CHOLESKY
@@ -64,54 +65,4 @@ slam_toolbox:
     coarse_angle_resolution: 0.0349        
     minimum_angle_penalty: 0.9
     minimum_distance_penalty: 0.5
-    use_response_expansion: true slam_toolbox:
-  ros__parameters:
-    # Các thông số chung
-    use_sim_time: true
-    
-    # Cấu hình frames phù hợp với nav2_params.yaml
-    map_frame: map 
-    base_frame: base_link
-    odom_frame: odom
-    
-    # Cấu hình lidar
-    scan_topic: /scan
-    max_laser_range: 6.0  # Đồng bộ với costmap raytrace_max_range
-    
-    # Tinh chỉnh transform và buffer
-    transform_timeout: 0.5  # Đồng bộ với transform_tolerance trong FollowPath
-    tf_buffer_duration: 20.0  # Cho phép lưu trữ transforms trong thời gian dài hơn
-    tf_buffer_size: 30  # Kích thước buffer lớn hơn để tránh queue đầy
-    
-    # Cài đặt mapping và scan matching
-    mode: mapping  # localization hoặc mapping
-    map_update_interval: 5.0
-    resolution: 0.05  # Đồng bộ với resolution của costmap
-    max_update_rate: 10.0  # Giới hạn tốc độ update để giảm tải CPU
-    
-    # Ngưỡng di chuyển để update bản đồ
-    minimum_travel_distance: 0.1  # Giảm để tăng tần suất cập nhật
-    minimum_travel_heading: 0.05
-    
-    # Cài đặt Ceres Solver
-    ceres_loss_function: HuberLoss
-    ceres_solver_type: SPARSE_NORMAL_CHOLESKY
-    
-    # Kích thước stack và memory
-    stack_size_to_use: 40000000  # 40MB như trong logs
-    
-    # Các thông số giúp ổn định và khắc phục lỗi
-    throttle_scans: 1  # Xử lý mỗi n scans
-    scan_buffer_size: 10
-    scan_buffer_maximum_scan_distance: 10.0
-    link_match_minimum_response_fine: 0.1
-    link_scan_maximum_distance: 5.0
-    loop_search_maximum_distance: 3.0
-    
-    # Debug và hiệu suất
-    enable_interactive_mode: false
-    debug_logging: false
-    
-    # Giảm thiểu lỗi khi khởi động
-    wait_for_transform: true  # Đợi transforms trước khi xử lý scans
-    wait_time: 1.0  # Thời gian tối đa đợi transform (giây) 
+    use_response_expansion: true 
