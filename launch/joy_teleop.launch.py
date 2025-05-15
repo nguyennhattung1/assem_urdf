@@ -26,12 +26,9 @@ def generate_launch_description():
         package='teleop_twist_joy',
         executable='teleop_node',
         name='teleop_twist_joy_node',
-        parameters=[joy_config_filepath],
-        remappings=[('/cmd_vel', '/diffbot_base_controller/cmd_vel_unstamped')] 
-        # Hoặc topic cmd_vel mà diff_drive_controller của bạn đang lắng nghe
-        # Thông thường là /diffbot_base_controller/cmd_vel nếu use_stamped_vel: false
-        # Hoặc /diffbot_base_controller/cmd_vel_stamped nếu use_stamped_vel: true
-        # Dựa trên control.yaml của bạn (use_stamped_vel: false), /cmd_vel hoặc /diffbot_base_controller/cmd_vel_unstamped là phù hợp
+        parameters=[joy_config_filepath]
+        # No remapping needed since relay_cmd_vel in control_and_topic_init.launch.py
+        # already relays from /cmd_vel to /diffbot_base_controller/cmd_vel_unstamped
     )
 
     return LaunchDescription([

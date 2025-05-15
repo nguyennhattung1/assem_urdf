@@ -46,7 +46,7 @@ def generate_launch_description():
     # Spawn Position Arguments
     declare_spawn_x = DeclareLaunchArgument(
         "x", 
-        default_value="0.0",
+        default_value="-2.0",
         description="Model Spawn X Axis Value"
     )
     declare_spawn_y = DeclareLaunchArgument(
@@ -56,7 +56,7 @@ def generate_launch_description():
     )
     declare_spawn_z = DeclareLaunchArgument(
         "z", 
-        default_value="0.2",
+        default_value="0.5",
         description="Model Spawn Z Axis Value"
     )
 
@@ -102,7 +102,7 @@ def generate_launch_description():
     }
 
     # World Configuration
-    world_file = "bookstore.sdf"
+    world_file = "empty.sdf"
     world_file_path = os.path.join(package_directory, "world", world_file)
 
     if not os.path.exists(world_file_path):
@@ -150,7 +150,7 @@ def generate_launch_description():
     # EKF Node
     declare_use_localization = DeclareLaunchArgument(
         'use_localization',
-        default_value='true',
+        default_value='False',
         description='Whether to use robot_localization'
     )
 
@@ -184,7 +184,7 @@ def generate_launch_description():
         # gz_sim,
         gazebo,
         gazebo_headless,
-        robot_localization_node,
+        # robot_localization_node,
     ])
 
     return ld
