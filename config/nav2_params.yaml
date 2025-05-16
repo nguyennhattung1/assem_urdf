@@ -15,7 +15,7 @@ amcl:
     lambda_short: 0.1
     laser_likelihood_max_dist: 2.0
     laser_max_range: 12.0
-    laser_min_range: 0.15
+    laser_min_range: 0.2
     laser_model_type: "likelihood_field"
     max_beams: 60
     max_particles: 2000
@@ -133,11 +133,11 @@ controller_server:
       debug_trajectory_details: True
       min_vel_x: 0.0
       min_vel_y: 0.0
-      max_vel_x: 1.02
+      max_vel_x: 1.13
       max_vel_y: 0.0
-      max_vel_theta: 5.0
+      max_vel_theta: 2.0
       min_speed_xy: 0.0
-      max_speed_xy: 1.02
+      max_speed_xy: 1.13
       min_speed_theta: 0.0
       acc_lim_x: 0.5
       acc_lim_y: 0.0
@@ -206,10 +206,10 @@ local_costmap:
           clearing: True
           marking: True
           data_type: "LaserScan"
-          raytrace_max_range: 6.0
-          raytrace_min_range: 0.0
-          obstacle_max_range: 5.5
-          obstacle_min_range: 0.0
+          raytrace_max_range: 12.0
+          raytrace_min_range: 0.2
+          obstacle_max_range: 12.0
+          obstacle_min_range: 0.2
       static_layer:
         map_subscribe_transient_local: True
       always_send_full_costmap: True
@@ -242,10 +242,10 @@ global_costmap:
           clearing: True
           marking: True
           data_type: "LaserScan"
-          raytrace_max_range: 6.0
-          raytrace_min_range: 0.0
-          obstacle_max_range: 5.5
-          obstacle_min_range: 0.0
+          raytrace_max_range: 12.0
+          raytrace_min_range: 0.2
+          obstacle_max_range: 12.0
+          obstacle_min_range: 0.2
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
         map_subscribe_transient_local: True
@@ -306,9 +306,9 @@ recoveries_server:
     transform_timeout: 0.1
     use_sim_time: true
     simulate_ahead_time: 2.0
-    max_rotational_vel: 1.0
+    max_rotational_vel: 2.0
     min_rotational_vel: 0.4
-    rotational_acc_lim: 3.2
+    rotational_acc_lim: 1.0
 
 robot_state_publisher:
   ros__parameters:
