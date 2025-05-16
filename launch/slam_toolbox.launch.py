@@ -26,7 +26,7 @@ def generate_launch_description():
         default_value=default_params_file,
         description='Full path to the ROS2 parameters file to use for the slam_toolbox node')
 
-    start_sync_slam_toolbox_node = Node(
+    start_async_slam_toolbox_node = Node(
         parameters=[
             slam_params_file,
             {'use_sim_time': use_sim_time}
@@ -34,12 +34,14 @@ def generate_launch_description():
         package='slam_toolbox',
         executable='async_slam_toolbox_node',
         name='slam_toolbox',
-        output='screen')
+        output='screen',
+        arguments=['--ros-args', '--log-level', 'info'],
+    )
 
     ld = LaunchDescription()
 
     ld.add_action(declare_use_sim_time_arg)
     ld.add_action(declare_slam_params_file_cmd)
-    ld.add_action(start_sync_slam_toolbox_node)
+    ld.add_action(start_async_slam_toolbox_node)
 
     return ld 

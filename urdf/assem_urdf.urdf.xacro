@@ -13,14 +13,14 @@
         xyz="0.0099132 0.00030561 0.03955"  
         rpy="0 0 0" />
       <mass
-        value="5" />
+        value="2" />
       <inertia
-        ixx="0.0013702"
-        ixy="9.6491E-08"
-        ixz="1.1654E-07"
-        iyy="0.0013447"
-        iyz="3.7844E-07"
-        izz="0.0026486" />
+        ixx="0.00054808"
+        ixy="3.85964E-08"
+        ixz="4.6616E-08"
+        iyy="0.00053788"
+        iyz="1.51376E-07"
+        izz="0.00105944" />
     </inertial>
     <visual>
       <origin
@@ -313,7 +313,7 @@
       <noise>
         <type>gaussian</type>
         <mean>0.0</mean>
-        <stddev>0.01</stddev>
+        <stddev>0.005</stddev>
       </noise>
       <visualize>true</visualize>
     </sensor>

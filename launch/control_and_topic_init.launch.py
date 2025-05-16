@@ -15,6 +15,14 @@ def generate_launch_description():
         
     # SLAM Toolbox params file
     slam_params_file = LaunchConfiguration('slam_params_file')
+    
+    # EKF params file
+    ekf_params_file = LaunchConfiguration('ekf_params_file')
+    declare_ekf_params_file = DeclareLaunchArgument(
+        'ekf_params_file',
+        default_value=os.path.join(get_package_share_directory('assem_urdf'), 'config', 'ekf.yaml'),
+        description='Full path to the EKF parameters file'
+    )
 
     # Load controller
     load_joint_state_controller = ExecuteProcess(
@@ -28,20 +36,19 @@ def generate_launch_description():
              'diffbot_base_controller'],
         output='screen'
     )
-    relay_odom = Node(
-        name="relay_odom",
-        package="topic_tools",
-        executable="relay",
-        parameters=[
-            {
-                "input_topic": "/diffbot_base_controller/odom",
-                "output_topic": "/odom",
-                "use_sim_time": use_sim_time
-            }
-        ],
-        output="screen",
+    
+    # Node EKF để fusion dữ liệu từ odometry và IMU
+    ekf_node = Node(
+        package='robot_localization',
+        executable='ekf_node',
+        name='ekf_filter_node',
+        output='screen',
+        parameters=[ekf_params_file, {'use_sim_time': use_sim_time}],
+        remappings=[('odometry/filtered', 'odom')]  # Đổi tên output topic thành /odom để SLAM sử dụng
     )
-
+    
+    # Không cần relay odom nữa vì EKF đã xuất bản trực tiếp vào topic /odom
+    # Thay vào đó chỉ cần relay cmd_vel
     relay_cmd_vel = Node(
         name="relay_cmd_vel",
         package="topic_tools",
@@ -55,7 +62,6 @@ def generate_launch_description():
         ],
         output="screen",
     )
-
 
     # Connection established
     bridge_clock = Node(
@@ -125,6 +131,7 @@ def generate_launch_description():
                 default_value=os.path.join(get_package_share_directory('assem_urdf'), 'config', 'slam_toolbox_params.yaml'),
                 description='Full path to the SLAM Toolbox parameters file to use'
             ),
+            declare_ekf_params_file,
             declare_use_sim_time,
             bridge_clock,
             load_joint_state_controller,
@@ -133,8 +140,9 @@ def generate_launch_description():
             bridge_lidar,
             bridge_camera,
             bridge_imu,
-            relay_odom,
+            # relay_odom,  # Đã bỏ vì dùng EKF
             relay_cmd_vel,
+            ekf_node,  # Thêm node EKF trước SLAM Toolbox
             slam_toolbox_node,
             rviz_node,
         ] )

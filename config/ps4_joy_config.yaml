@@ -15,10 +15,10 @@
           yaw: 2.0    # Giữ ở max, đồng bộ với giới hạn trong control.yaml
 
 
-        enable_button: 4          # Nút L1 (Shoulder Left) làm deadman switch (cần giữ để di chuyển)
+        enable_button: -1          # Nút L1 (Shoulder Left) làm deadman switch (cần giữ để di chuyển)
                                   # Nếu không muốn deadman, đặt là -1 hoặc bỏ dòng này
                                   # và đảm bảo `require_enable_button` là false (mặc định là true)
-        
+        require_enable_button: false
         # enable_turbo_button: 5  # Nút R1 (Shoulder Right) để kích hoạt turbo
         
         # Invert axes if necessary (PS4 controller often needs this)

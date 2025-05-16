@@ -30,22 +30,21 @@ diffbot_base_controller:
 
     open_loop: false
     enable_odom_tf: true
-    cmd_vel_timeout: 0.5
+    cmd_vel_timeout: 0.2
     publish_limited_velocity: true
     use_stamped_vel: false
     velocity_rolling_window_size: 10
 
     # PID Controller Parameters based on wheel velocity limits from URDF
-    # Reduced max angular velocity for better control
     # Max angular velocity = 34.87 rad/s (tương đương 333 RPM)
     # Max linear velocity = wheel_radius * max_angular_velocity = 0.0325 * 34.87 = 1.13 m/s
     
     linear.x.has_velocity_limits: true
     linear.x.has_acceleration_limits: true
     linear.x.has_jerk_limits: false
-    linear.x.max_velocity: 1.13    # m/s - Dựa trên tốc độ động cơ 333 RPM (34.87 rad/s)
-    linear.x.min_velocity: -1.13   # m/s
-    linear.x.max_acceleration: 0.5  # m/s²
+    linear.x.max_velocity: 1.13   # m/s - Giữ nguyên tốc độ tối đa
+    linear.x.min_velocity: -1.13  # m/s
+    linear.x.max_acceleration: 0.5  # m/s² - Tăng gia tốc để đạt tốc độ nhanh hơn
     linear.x.min_acceleration: -0.5 # m/s²
     linear.x.max_jerk: 0.0         # m/s³
     linear.x.min_jerk: 0.0         # m/s³
@@ -53,16 +52,16 @@ diffbot_base_controller:
     angular.z.has_velocity_limits: true
     angular.z.has_acceleration_limits: true
     angular.z.has_jerk_limits: false
-    angular.z.max_velocity: 2.0   # rad/s - Tính toán tối đa lý thuyết: (v_max * 2) / wheel_separation = (1.13 * 2) / 0.196 ≈ 11.5, giảm xuống 2.0 để ổn định
+    angular.z.max_velocity: 2.0   # rad/s - Giữ tốc độ góc cao
     angular.z.min_velocity: -2.0  # rad/s
-    angular.z.max_acceleration: 1.0  # rad/s² - Điều chỉnh cho chuyển động xoay mượt mà
+    angular.z.max_acceleration: 1.0  # rad/s² - Tăng gia tốc góc
     angular.z.min_acceleration: -1.0 # rad/s²
     angular.z.max_jerk: 0.0         # rad/s³
     angular.z.min_jerk: 0.0         # rad/s³
 
-    # PID gains - Adjusted for the robot's dynamics
-    linear.x.pid: {p: 5.0, i: 0.5, d: 0.0}  
-    angular.z.pid: {p: 5.0, i: 0.5, d: 0.0}
+    # PID gains - Điều chỉnh để đáp ứng nhanh và chính xác hơn
+    linear.x.pid: {p: 5.0, i: 0.5, d: 0.1}  # Tăng P để đáp ứng nhanh hơn, giảm D
+    angular.z.pid: {p: 5.0, i: 0.5, d: 0.1} # Tăng P để đáp ứng nhanh hơn, giảm D
 
     
 

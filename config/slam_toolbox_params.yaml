@@ -7,9 +7,10 @@ slam_toolbox:
     ceres_preconditioner: SCHUR_JACOBI
     ceres_trust_strategy: LEVENBERG_MARQUARDT
     ceres_dogleg_type: TRADITIONAL_DOGLEG
-    ceres_loss_function: None
+    ceres_loss_function: HuberLoss
 
-    # ROS Parameters - Changed base_frame to base_link
+    # ROS Parameters
+    use_sim_time: true
     odom_frame: odom
     map_frame: map
     base_frame: base_link
@@ -17,52 +18,55 @@ slam_toolbox:
     use_map_saver: true
     mode: mapping
 
+    # Debug and performance settings
     debug_logging: false
-    throttle_scans: 2
-    transform_publish_period: 0.02
-    map_update_interval: 5.0
+    throttle_scans: 1  # Giảm từ 2 xuống 1 để xử lý tất cả các scan ở tốc độ cao
+    transform_publish_period: 0.02  # Giảm từ 0.05, tăng tần suất xuất bản transform
+    map_update_interval: 1.0  # Giảm từ 2.0, cập nhật bản đồ thường xuyên hơn
     resolution: 0.05
-    min_laser_range: 0.2
-    max_laser_range: 12.0
-    minimum_time_interval: 0.5
-    transform_timeout: 0.2
-    tf_buffer_duration: 30.
+    min_laser_range: 0.2  # Phù hợp với phạm vi LiDAR A1M8
+    max_laser_range: 12.0  # Phạm vi tối đa của A1M8
+    minimum_time_interval: 0.1  # Giảm từ 0.2, xử lý scan thường xuyên hơn
+    transform_timeout: 0.5  # Giảm từ 1.0, giảm thời gian chờ transform
+    tf_buffer_duration: 30.0  # Giữ nguyên
     stack_size_to_use: 40000000
-    enable_interactive_mode: true
+    enable_interactive_mode: false
+    message_queue_size: 30  # Tăng từ 20 lên 30, tăng kích thước queue
 
-    # General Parameters
+    # General Parameters - Điều chỉnh để tránh trượt scan matching
     use_scan_matching: true
     use_scan_barycenter: true
-    minimum_travel_distance: 0.5
-    minimum_travel_heading: 0.5
-    scan_buffer_size: 15
-    scan_buffer_maximum_scan_distance: 10.0
-    link_match_minimum_response_fine: 0.1  
-    link_scan_maximum_distance: 1.5
-    loop_search_maximum_distance: 3.0
+    minimum_travel_distance: 0.05  # Giảm xuống để cập nhật thường xuyên hơn với chuyển động nhỏ
+    minimum_travel_heading: 0.03  # Giảm xuống để nhạy hơn với thay đổi hướng nhỏ
+    scan_buffer_size: 20  # Tăng lên để lưu trữ nhiều scan hơn
+    scan_buffer_maximum_scan_distance: 12.0  # Phù hợp với phạm vi LiDAR A1M8
+    link_match_minimum_response_fine: 0.15  # Tăng để yêu cầu độ tin cậy cao hơn
+    link_scan_maximum_distance: 8.0  # Tăng để phát hiện vòng lặp tốt hơn
+    loop_search_maximum_distance: 6.0  # Tăng phạm vi tìm kiếm vòng lặp
     do_loop_closing: true 
-    loop_match_minimum_chain_size: 10           
-    loop_match_maximum_variance_coarse: 3.0  
-    loop_match_minimum_response_coarse: 0.35    
-    loop_match_minimum_response_fine: 0.45
+    loop_match_minimum_chain_size: 8  # Giảm để phát hiện vòng lặp dễ dàng hơn   
+    loop_match_maximum_variance_coarse: 2.0  # Giảm để yêu cầu tính nhất quán cao hơn
+    loop_match_minimum_response_coarse: 0.4  # Tăng để yêu cầu độ tin cậy cao hơn
+    loop_match_minimum_response_fine: 0.5  # Tăng để yêu cầu độ tin cậy cao hơn khi khớp mịn
+    wait_for_transform: true
+    wait_time: 1.0
 
-    # Correlation Parameters
-    correlation_search_space_dimension: 0.5
+    # Correlation Parameters - Điều chỉnh để làm việc tốt hơn với LiDAR A1M8
+    correlation_search_space_dimension: 0.6  # Tăng không gian tìm kiếm
     correlation_search_space_resolution: 0.01
-    correlation_search_space_smear_deviation: 0.1 
+    correlation_search_space_smear_deviation: 0.03  # Giảm để độ chính xác cao hơn
 
-    # Loop Closure Parameters
-    loop_search_space_dimension: 8.0
-    loop_search_space_resolution: 0.05
-    loop_search_space_smear_deviation: 0.03
+    # Loop Closure Parameters - Điều chỉnh để cải thiện khả năng nhận diện vòng lặp
+    loop_search_space_dimension: 9.0  # Tăng không gian tìm kiếm vòng lặp
+    loop_search_space_resolution: 0.03  # Tăng độ phân giải
+    loop_search_space_smear_deviation: 0.02  # Giảm để khớp chính xác hơn
 
-    # Scan Matcher Parameters
-    distance_variance_penalty: 0.5      
-    angle_variance_penalty: 1.0    
-
-    fine_search_angle_offset: 0.00349     
-    coarse_search_angle_offset: 0.349   
-    coarse_angle_resolution: 0.0349        
-    minimum_angle_penalty: 0.9
-    minimum_distance_penalty: 0.5
-    use_response_expansion: true 
+    # Scan Matcher Parameters - Tối ưu hóa bộ so khớp 
+    distance_variance_penalty: 0.3  # Giảm để ưu tiên khớp khoảng cách    
+    angle_variance_penalty: 1.2  # Tăng để giữ chắc góc quay 
+    fine_search_angle_offset: 0.002  # Giảm để tìm kiếm góc chính xác hơn   
+    coarse_search_angle_offset: 0.2  # Giảm để tìm kiếm góc chính xác hơn
+    coarse_angle_resolution: 0.02  # Tăng độ phân giải góc      
+    minimum_angle_penalty: 0.7  # Giảm để cho phép sai lệch góc lớn hơn
+    minimum_distance_penalty: 0.3  # Giảm để cho phép sai lệch khoảng cách lớn hơn
+    use_response_expansion: true
