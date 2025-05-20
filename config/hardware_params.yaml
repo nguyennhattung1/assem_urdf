@@ -1,0 +1,74 @@
+controller_manager:
+  ros__parameters:
+    update_rate: 100  # Hz (increased from 50Hz for faster control loop)
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+    diffbot_base_controller:
+      type: diff_drive_controller/DiffDriveController
+
+diffbot_base_controller:
+  ros__parameters:
+    left_wheel_names: ["wheel_left_joint"]
+    right_wheel_names: ["wheel_right_joint"]
+
+    wheel_separation: 0.196  # Distance between wheels
+    wheels_per_side: 1
+    wheel_radius: 0.0325
+
+    wheel_separation_multiplier: 1.0
+    left_wheel_radius_multiplier: 1.0
+    right_wheel_radius_multiplier: 1.0
+
+    publish_rate: 100.0  # Increased from 50.0
+    odom_frame_id: odom
+    base_frame_id: base_link
+    pose_covariance_diagonal : [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+    twist_covariance_diagonal: [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
+
+    open_loop: false
+    enable_odom_tf: true
+    cmd_vel_timeout: 0.1  # Reduced from 0.2 for faster timeout detection
+    publish_limited_velocity: true
+    use_stamped_vel: false
+    velocity_rolling_window_size: 10
+
+    # Velocity and acceleration limits
+    linear.x.has_velocity_limits: true
+    linear.x.has_acceleration_limits: true
+    linear.x.has_jerk_limits: false
+    linear.x.max_velocity: 1.13
+    linear.x.min_velocity: -1.13
+    linear.x.max_acceleration: 1.0  # Increased from 0.5
+    linear.x.min_acceleration: -1.0  # Increased from -0.5
+    linear.x.max_jerk: 0.0
+    linear.x.min_jerk: 0.0
+
+    angular.z.has_velocity_limits: true
+    angular.z.has_acceleration_limits: true
+    angular.z.has_jerk_limits: false
+    angular.z.max_velocity: 2.0
+    angular.z.min_velocity: -2.0
+    angular.z.max_acceleration: 2.0  # Increased from 1.0
+    angular.z.min_acceleration: -2.0  # Increased from -1.0
+    angular.z.max_jerk: 0.0
+    angular.z.min_jerk: 0.0
+
+    # Tuned PID gains for better responsiveness
+    linear.x.pid: {p: 7.0, i: 0.8, d: 0.3}  # Moderated P gain
+    angular.z.pid: {p: 7.0, i: 0.8, d: 0.3}  # Moderated P gain
+
+# Hardware interface parameters
+naiscorp_hardware_interface:
+  ros__parameters:
+    left_wheel_name: "wheel_left_joint"
+    right_wheel_name: "wheel_right_joint"
+    loop_rate: 100.0
+    device: "/dev/ttyCH341USB1"  # Corrected: No trailing space
+    baud_rate: 115200
+    timeout_ms: 20  # Further reduced from 50 for faster timeout detection
+    enc_counts_per_rev: 1440  # 360 CPR × 4 (quadrature encoding)
+    pid_p: 7  # Moderated P gain
+    pid_i: 3
+    pid_d: 0.5 

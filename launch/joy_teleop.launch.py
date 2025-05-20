@@ -17,7 +17,7 @@ def generate_launch_description():
         name='joy_node',
         parameters=[{
             'dev': '/dev/input/js0',  # Thiết bị tay cầm, có thể khác
-            'deadzone': 0.05,
+            'deadzone': 0.005,
             'autorepeat_rate': 20.0,
         }]
     )

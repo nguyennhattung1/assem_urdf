@@ -15,7 +15,7 @@ def generate_launch_description():
         
     # SLAM Toolbox params file
     slam_params_file = LaunchConfiguration('slam_params_file')
-    
+
     # EKF params file
     ekf_params_file = LaunchConfiguration('ekf_params_file')
     declare_ekf_params_file = DeclareLaunchArgument(

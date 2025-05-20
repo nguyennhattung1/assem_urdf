@@ -20,18 +20,18 @@ slam_toolbox:
 
     # Debug and performance settings
     debug_logging: false
-    throttle_scans: 1  # Giảm từ 2 xuống 1 để xử lý tất cả các scan ở tốc độ cao
-    transform_publish_period: 0.02  # Giảm từ 0.05, tăng tần suất xuất bản transform
-    map_update_interval: 1.0  # Giảm từ 2.0, cập nhật bản đồ thường xuyên hơn
+    throttle_scans: 2  # Relaxed from 1 to reduce load
+    transform_publish_period: 0.05  # Relaxed from 0.02
+    map_update_interval: 2.0  # Relaxed from 1.0
     resolution: 0.05
     min_laser_range: 0.2  # Phù hợp với phạm vi LiDAR A1M8
     max_laser_range: 12.0  # Phạm vi tối đa của A1M8
-    minimum_time_interval: 0.1  # Giảm từ 0.2, xử lý scan thường xuyên hơn
-    transform_timeout: 0.5  # Giảm từ 1.0, giảm thời gian chờ transform
-    tf_buffer_duration: 30.0  # Giữ nguyên
+    minimum_time_interval: 0.2  # Relaxed from 0.1
+    transform_timeout: 0.5
+    tf_buffer_duration: 30.0
     stack_size_to_use: 40000000
     enable_interactive_mode: false
-    message_queue_size: 30  # Tăng từ 20 lên 30, tăng kích thước queue
+    message_queue_size: 10  # Reduced from 30
 
     # General Parameters - Điều chỉnh để tránh trượt scan matching
     use_scan_matching: true
