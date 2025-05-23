@@ -143,11 +143,13 @@ def generate_launch_description():
             {
                 "input_topic": "/cmd_vel",
                 "output_topic": "/diffbot_base_controller/cmd_vel_unstamped",
-                "use_sim_time": use_sim_time
+                "use_sim_time": use_sim_time,
+                "lazy": False,  # Không đợi subscriber trước khi hoạt động
+                "queue_size": 1  # Giảm kích thước hàng đợi để tăng độ nhạy
             }
         ],
         output="screen",
-        arguments=['--ros-args', '--log-level', 'info']
+        arguments=['--ros-args', '--log-level', 'warn']  # Giảm log để tăng tốc
     )
 
     # Event to start relay only after diff drive controller is loaded

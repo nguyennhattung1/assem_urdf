@@ -11,6 +11,7 @@ ekf_filter_node:
 # environment and want to ignore the effect of small variations in the ground plane that might otherwise be detected
 # by, for example, an IMU. Defaults to false if unspecified.
         two_d_mode: true
+        sensor_timeout: 0.1
 
 # Whether to publish the acceleration state. Defaults to false if unspecified.
         publish_acceleration: true

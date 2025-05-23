@@ -42,8 +42,8 @@ diffbot_base_controller:
     linear.x.has_velocity_limits: true
     linear.x.has_acceleration_limits: true
     linear.x.has_jerk_limits: false
-    linear.x.max_velocity: 1.13   # m/s - Giữ nguyên tốc độ tối đa
-    linear.x.min_velocity: -1.13  # m/s
+    linear.x.max_velocity: 0.8671   # m/s - Giữ nguyên tốc độ tối đa
+    linear.x.min_velocity: -0.8671  # m/s
     linear.x.max_acceleration: 0.5  # m/s² - Tăng gia tốc để đạt tốc độ nhanh hơn
     linear.x.min_acceleration: -0.5 # m/s²
     linear.x.max_jerk: 0.0         # m/s³

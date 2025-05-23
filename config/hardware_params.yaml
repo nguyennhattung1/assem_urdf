@@ -1,6 +1,6 @@
 controller_manager:
   ros__parameters:
-    update_rate: 100  # Hz (increased from 50Hz for faster control loop)
+    update_rate: 200  # Hz (increased from 50Hz for faster control loop)
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
@@ -22,6 +22,7 @@ diffbot_base_controller:
     right_wheel_radius_multiplier: 1.0
 
     publish_rate: 100.0  # Increased from 50.0
+    
     odom_frame_id: odom
     base_frame_id: base_link
     pose_covariance_diagonal : [0.001, 0.001, 0.001, 0.001, 0.001, 0.01]
@@ -38,8 +39,8 @@ diffbot_base_controller:
     linear.x.has_velocity_limits: true
     linear.x.has_acceleration_limits: true
     linear.x.has_jerk_limits: false
-    linear.x.max_velocity: 1.13
-    linear.x.min_velocity: -1.13
+    linear.x.max_velocity: 0.8671  # Aligned with URDF hardware limits
+    linear.x.min_velocity: -0.8671 # Aligned with URDF hardware limits
     linear.x.max_acceleration: 1.0  # Increased from 0.5
     linear.x.min_acceleration: -1.0  # Increased from -0.5
     linear.x.max_jerk: 0.0
@@ -59,16 +60,17 @@ diffbot_base_controller:
     linear.x.pid: {p: 7.0, i: 0.8, d: 0.3}  # Moderated P gain
     angular.z.pid: {p: 7.0, i: 0.8, d: 0.3}  # Moderated P gain
 
-# Hardware interface parameters
-naiscorp_hardware_interface:
-  ros__parameters:
-    left_wheel_name: "wheel_left_joint"
-    right_wheel_name: "wheel_right_joint"
-    loop_rate: 100.0
-    device: "/dev/ttyCH341USB1"  # Corrected: No trailing space
-    baud_rate: 115200
-    timeout_ms: 20  # Further reduced from 50 for faster timeout detection
-    enc_counts_per_rev: 1440  # 360 CPR × 4 (quadrature encoding)
-    pid_p: 7  # Moderated P gain
-    pid_i: 3
-    pid_d: 0.5 
+# Hardware interface parameters are now sourced from ros2_control.xacro for NaiscorpRobotHardware
+# This section has been removed to avoid redundancy and ensure clarity.
+# naiscorp_hardware_interface:
+#   ros__parameters:
+#     left_wheel_name: "wheel_left_joint"
+#     right_wheel_name: "wheel_right_joint"
+#     loop_rate: 100.0
+#     device: "/dev/ttyCH341USB1"
+#     baud_rate: 115200
+#     timeout_ms: 50
+#     wheel_diameter: 65
+#     pid_p: 5
+#     pid_i: 2
+#     pid_d: 0 

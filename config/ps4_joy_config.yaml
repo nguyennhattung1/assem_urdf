@@ -3,16 +3,16 @@
         axis_linear:  # Mặc định là linear.x
           x: 1        
         scale_linear:
-          x: 1.13      # Tốc độ thẳng tối đa (m/s) - tương ứng với động cơ 333 RPM
+          x: 0.8671      # Tốc độ thẳng tối đa (m/s) - tương ứng với động cơ 333 RPM
         scale_linear_turbo:
-          x: 1.13      # Giữ ở max, vì control.yaml sẽ giới hạn
+          x: 0.8671      # Giữ ở max, vì control.yaml sẽ giới hạn
                         # (Hoặc đặt thấp hơn nếu muốn chế độ turbo chậm hơn max)
-        axis_angular: # Mặc định là angular.z
-          yaw: 0      
+        axis_angular:
+          yaw: 0      # Giữ nguyên
         scale_angular:
-          yaw: 2.0    # Vận tốc xoay tối đa (rad/s) - đồng bộ với control.yaml
+          yaw: 0.5    # Giảm tốc độ quay ban đầu
         scale_angular_turbo:
-          yaw: 2.0    # Giữ ở max, đồng bộ với giới hạn trong control.yaml
+          yaw: 0.8671 # Giữ nguyên
 
 
         enable_button: -1          # Nút L1 (Shoulder Left) làm deadman switch (cần giữ để di chuyển)
@@ -28,3 +28,12 @@
         # Nếu bạn muốn sử dụng các nút khác hoặc các trục khác, bạn cần tìm ra chỉ số của chúng.
         # Một cách là echo topic /joy khi joy_node đang chạy và di chuyển/nhấn các nút.
         # sensor_msgs/msg/Joy có hai mảng: axes và buttons. Chỉ số trong mảng đó là thứ bạn cần.
+        # Thêm tham số mới
+        scale_linear_exponent: 1.5  # Tạo đáp ứng phi tuyến
+        
+        # Đảo trục nếu cần thiết cho tay cầm PS4
+        invert_linear_x: true       # Đảo chiều (đẩy lên = tiến)
+        
+        # Thêm tham số giới hạn tốc độ thay đổi
+        rate_limit_linear_x: 1.0   # Giới hạn tốc độ thay đổi (m/s²)
+        rate_limit_angular_z: 1.5  # Giới hạn tốc độ thay đổi góc (rad/s²)

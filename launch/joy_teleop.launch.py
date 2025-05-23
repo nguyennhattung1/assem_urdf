@@ -18,7 +18,8 @@ def generate_launch_description():
         parameters=[{
             'dev': '/dev/input/js0',  # Thiết bị tay cầm, có thể khác
             'deadzone': 0.005,
-            'autorepeat_rate': 20.0,
+            'autorepeat_rate': 50.0,
+            
         }]
     )
 
